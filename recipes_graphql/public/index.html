@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GraphQL API Docs</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.6; }
+  h1, h2 { color: #333; }
+  pre { background: #f4f4f4; padding: 1rem; border-radius: 5px; overflow-x: auto; }
+  code { font-family: monospace; }
+</style>
+</head>
+<body>
+<h1>GraphQL API Documentation</h1>
+
+<h2>Authentication</h2>
+<p><strong>Mutations that require no header:</strong> <code>createUser</code>, <code>login</code></p>
+<p><strong>Mutations/Queries that require Authorization header:</strong> <code>me</code>, <code>recipes</code>, <code>recipe</code>, <code>createRecipe</code></p>
+
+<h2>Examples</h2>
+
+<h3>Create User</h3>
+<pre>
+mutation {
+  createUser(email: "test@example.com", password: "Password123") {
+    token
+    error
+  }
+}
+</pre>
+
+<h3>Login</h3>
+<pre>
+mutation {
+  login(email: "test@example.com", password: "Password123") {
+    token
+    error
+  }
+}
+</pre>
+
+<h3>Get All Recipes</h3>
+<pre>
+query {
+  recipes {
+    data {
+      _id
+      title
+      description
+      author {
+        _id
+        email
+      }
+    }
+    error
+  }
+}
+</pre>
+
+<h3>Get Single Recipe</h3>
+<pre>
+query {
+  recipe(id: "REPLACE_WITH_ID") {
+    data {
+      _id
+      title
+      description
+      author {
+        _id
+        email
+      }
+    }
+    error
+  }
+}
+</pre>
+
+<h3>Create Recipe</h3>
+<pre>
+mutation {
+  createRecipe(title: "Spaghetti Bolognese", description: "Classic Italian pasta") {
+    data {
+      _id
+      title
+      description
+      author {
+        _id
+        email
+      }
+    }
+    error
+  }
+}
+</pre>
+
+</body>
+</html>

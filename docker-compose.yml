@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  recipes_graphql:
+    build: 
+      context: ./recipes_graphql
+      dockerfile: Dockerfile
+    container_name: recipes_graphql
+    volumes:
+    - ./recipes_graphql:/usr/src/app
+    - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express:1.0.0-alpha.4
+    container_name: mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
