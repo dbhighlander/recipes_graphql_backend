@@ -1,46 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>GraphQL API Docs</title>
-<style>
-  body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.6; }
-  h1, h2 { color: #333; }
-  pre { background: #f4f4f4; padding: 1rem; border-radius: 5px; overflow-x: auto; }
-  code { font-family: monospace; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GraphQL API Documentation</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+    pre {
+      background-color: #f0f0f0;
+      padding: 1rem;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: 'Courier New', Courier, monospace;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    .requires-auth {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+    a {
+      color: #1e88e5;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-<h1>GraphQL API Documentation</h1>
+  <header>
+    <h1>GraphQL API Documentation</h1>
+    <p>Explore your API using the GraphQL Playground or via POST requests</p>
+  </header>
+  <main>
+    <section>
+      <h2>Endpoint</h2>
+      <p>The GraphQL endpoint is:</p>
+      <pre><code>POST /graphql</code></pre>
+    </section>
 
-<h2>Authentication</h2>
-<p><strong>Mutations that require no header:</strong> <code>createUser</code>, <code>login</code></p>
-<p><strong>Mutations/Queries that require Authorization header:</strong> <code>me</code>, <code>recipes</code>, <code>recipe</code>, <code>createRecipe</code></p>
+    <section>
+      <h2>Authentication</h2>
+      <p>Mutations or queries marked with <span class="requires-auth">requires auth</span> require a Bearer token in the <code>Authorization</code> header:</p>
+      <pre><code>Authorization: Bearer &lt;your-token-here&gt;</code></pre>
+    </section>
 
-<h2>Examples</h2>
+    <section>
+      <h2>Sample Queries</h2>
 
-<h3>Create User</h3>
-<pre>
-mutation {
-  createUser(email: "test@example.com", password: "Password123") {
-    token
-    error
+      <h3>1. Get current user <span class="requires-auth">(requires auth)</span></h3>
+      <pre><code>
+query {
+  me {
+    id
+    email
   }
 }
-</pre>
+      </code></pre>
 
-<h3>Login</h3>
-<pre>
-mutation {
-  login(email: "test@example.com", password: "Password123") {
-    token
-    error
-  }
-}
-</pre>
-
-<h3>Get All Recipes</h3>
-<pre>
+      <h3>2. Get all recipes <span class="requires-auth">(requires auth)</span></h3>
+      <pre><code>
 query {
   recipes {
     data {
@@ -48,50 +94,66 @@ query {
       title
       description
       author {
-        _id
+        id
         email
       }
     }
     error
   }
 }
-</pre>
+      </code></pre>
+    </section>
 
-<h3>Get Single Recipe</h3>
-<pre>
-query {
-  recipe(id: "REPLACE_WITH_ID") {
-    data {
-      _id
-      title
-      description
-      author {
-        _id
-        email
-      }
-    }
-    error
-  }
-}
-</pre>
+    <section>
+      <h2>Sample Mutations</h2>
 
-<h3>Create Recipe</h3>
-<pre>
+      <h3>1. Create a new user</h3>
+      <pre><code>
 mutation {
-  createRecipe(title: "Spaghetti Bolognese", description: "Classic Italian pasta") {
+  createUser(email: "test@example.com", password: "StrongPass123!") {
+    token
+    error
+  }
+}
+      </code></pre>
+
+      <h3>2. Login</h3>
+      <pre><code>
+mutation {
+  login(email: "test@example.com", password: "StrongPass123!") {
+    token
+    error
+  }
+}
+      </code></pre>
+
+      <h3>3. Create a recipe <span class="requires-auth">(requires auth)</span></h3>
+      <pre><code>
+mutation {
+  createRecipe(title: "Spaghetti Bolognese", description: "Classic Italian pasta with meat sauce") {
     data {
       _id
       title
       description
       author {
-        _id
+        id
         email
       }
     }
     error
   }
 }
-</pre>
+      </code></pre>
+    </section>
 
+    <section>
+      <h2>Notes</h2>
+      <ul>
+        <li>Ensure your password is strong when creating a user.</li>
+        <li>All mutations and queries marked <span class="requires-auth">requires auth</span> need authentication.</li>
+        <li>GitHub repo <a href='https://github.com/dbhighlander/recipes_backend'>here</a></li>
+      </ul>
+    </section>
+  </main>
 </body>
 </html>

@@ -4,7 +4,7 @@ services:
   recipes_graphql:
     build: 
       context: ./recipes_graphql
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-local
     container_name: recipes_graphql
     volumes:
     - ./recipes_graphql:/usr/src/app
