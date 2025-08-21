@@ -15,14 +15,23 @@ export const recipeResolver = {
   },
 
   Mutation: {
-    createRecipe: requireAuth(async (_, { title, description }, { user }) => {
-      const recipe = await Recipe.create({
-        title,
-        description,
-        author: user._id,
-      });
-      const populated = await recipe.populate("author", "email");
-      return { data: populated, error: null };
-    }),
+    createRecipe: requireAuth(
+      async (_, { title, description, ingredients, steps }, { user }) => {
+        try {
+          const recipe = await Recipe.create({
+            title,
+            description,
+            ingredients,
+            steps,
+            author: user._id,
+          });
+
+          const populated = await recipe.populate("author", "email");
+          return { data: populated, error: null };
+        } catch (err) {
+          return { data: null, error: err.message };
+        }
+      }
+    ),
   },
 };

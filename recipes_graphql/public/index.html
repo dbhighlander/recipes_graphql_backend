@@ -93,10 +93,14 @@ query {
       _id
       title
       description
+      ingredients
+      steps
       author {
         id
         email
       }
+      createdAt
+      updatedAt
     }
     error
   }
@@ -130,15 +134,22 @@ mutation {
       <h3>3. Create a recipe <span class="requires-auth">(requires auth)</span></h3>
       <pre><code>
 mutation {
-  createRecipe(title: "Spaghetti Bolognese", description: "Classic Italian pasta with meat sauce") {
+  createRecipe(
+    title: "Spaghetti Bolognese",
+    description: "Classic Italian pasta with meat sauce"
+  ) {
     data {
       _id
       title
       description
+      ingredients
+      steps
       author {
         id
         email
       }
+      createdAt
+      updatedAt
     }
     error
   }
@@ -151,7 +162,7 @@ mutation {
       <ul>
         <li>Ensure your password is strong when creating a user.</li>
         <li>All mutations and queries marked <span class="requires-auth">requires auth</span> need authentication.</li>
-        <li>GitHub repo <a href='https://github.com/dbhighlander/recipes_backend'>here</a></li>
+        <li>GitHub repo <a href='https://github.com/dbhighlander/recipes_backend' target="_blank">here</a></li>
       </ul>
     </section>
   </main>

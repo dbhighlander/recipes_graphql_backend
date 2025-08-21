@@ -7,14 +7,15 @@ import path from "path";
 import { resolvers } from "./src/resolvers/index.js";
 import { typeDefs } from "./src/schema/typeDefs.js";
 
-const SECRET = process.env.SECRET || "agopw945mjdf0";
+const SECRET = process.env.SECRET || "agopw945mjdf0"; 
 const PORT = process.env.PORT || 3000;
-const MONGO_HOST = process.env.MONGO_HOST || "host.docker.internal:27017";
-const MONGO_URI = `mongodb://${MONGO_HOST}/recipes`;
+const MONGO_URI = process.env.MONGO_URI || `mongodb://host.docker.internal:27017/recipes`; 
 
 // Connect to MongoDB
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI,{
+    family: 4, // Force IPv4
+  })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
 
@@ -27,8 +28,8 @@ const server = new ApolloServer({
     const user = token ? jwt.verify(token, SECRET) : null;
     return { user };
   },
-  playground: false,
-  introspection: false
+  playground: false, // disable playground
+  introspection: true, // optional: allow schema introspection
 });
 
 const app = express();
@@ -42,5 +43,5 @@ await server.start();
 server.applyMiddleware({ app, path: "/graphql" });
 
 app.listen(PORT, () => {
-  console.log(`Server running on :${PORT}${server.graphqlPath}`);
+  console.log(`Server running at http://localhost:${PORT}${server.graphqlPath}`);
 });
